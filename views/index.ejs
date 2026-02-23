@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Votaciones - PostgreSQL</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎓 Temas de Aprendizaje</h1>
+    <p class="subtitle">💾 Datos persistentes en PostgreSQL</p>
+
+    <!-- Formulario para crear nuevo tema -->
+    <div class="create-section">
+      <h2>Agregar Nuevo Tema</h2>
+      <form action="/topics" method="POST" class="form-inline">
+        <input type="text" name="name" placeholder="Nombre del tema" required>
+        <button type="submit" class="btn btn-primary">Crear Tema</button>
+      </form>
+    </div>
+
+    <!-- Lista de temas -->
+    <div class="topics-list">
+      <% if (topics.length === 0) { %>
+        <p class="empty-state">No hay temas todavía. ¡Crea el primero!</p>
+      <% } else { %>
+        <% topics.forEach(topic => { %>
+          <div class="topic-card">
+            <div class="topic-header">
+              <div class="topic-info">
+                <h3><%= topic.name %></h3>
+                <span class="votes-count">👍 <span id="topic-votes-<%= topic.id %>"><%= topic.votes %></span> votos</span>
+              </div>
+              <div class="topic-actions">
+                <button class="btn btn-vote" onclick="votarTema(<%= topic.id %>)">👍 Votar</button>
+                <button class="btn btn-edit" onclick="alternarEditarTema(<%= topic.id %>)">✏️ Editar</button>
+                <form action="/topics/<%= topic.id %>/delete" method="POST" style="display: inline;">
+                  <button type="submit" class="btn btn-delete" onclick="return confirm('¿Eliminar este tema?')">🗑️</button>
+                </form>
+              </div>
+            </div>
+
+            <!-- Formulario editar tema (oculto) -->
+            <div id="edit-topic-<%= topic.id %>" class="edit-form" style="display: none;">
+              <form action="/topics/<%= topic.id %>/update" method="POST" class="form-inline">
+                <input type="text" name="name" value="<%= topic.name %>" required>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <button type="button" class="btn btn-secondary" onclick="alternarEditarTema(<%= topic.id %>)">Cancelar</button>
+              </form>
+            </div>
+
+            <!-- Enlaces del tema -->
+            <div class="links-section">
+              <h4>Enlaces:</h4>
+              
+              <!-- Formulario agregar enlace -->
+              <button class="btn btn-secondary btn-sm" onclick="alternarAgregarEnlace(<%= topic.id %>)">+ Agregar Enlace</button>
+              
+              <div id="add-link-<%= topic.id %>" class="add-link-form" style="display: none;">
+                <form action="/topics/<%= topic.id %>/links" method="POST">
+                  <input type="text" name="url" placeholder="URL" required>
+                  <input type="text" name="description" placeholder="Descripción" required>
+                  <button type="submit" class="btn btn-primary">Agregar</button>
+                  <button type="button" class="btn btn-secondary" onclick="alternarAgregarEnlace(<%= topic.id %>)">Cancelar</button>
+                </form>
+              </div>
+
+              <!-- Lista de enlaces -->
+              <% if (topic.links.length === 0) { %>
+                <p class="empty-links">No hay enlaces todavía.</p>
+              <% } else { %>
+                <ul class="links-list">
+                  <% topic.links.forEach(link => { %>
+                    <li class="link-item">
+                      <div class="link-content">
+                        <a href="<%= link.url %>" target="_blank"><%= link.description %></a>
+                        <span class="votes-count">👍 <span id="link-votes-<%= topic.id %>-<%= link.id %>"><%= link.votes %></span></span>
+                      </div>
+                      <div class="link-actions">
+                        <button class="btn btn-vote btn-sm" onclick="votarEnlace(<%= topic.id %>, <%= link.id %>)">👍</button>
+                        <button class="btn btn-edit btn-sm" onclick="alternarEditarEnlace(<%= topic.id %>, <%= link.id %>)">✏️</button>
+                        <form action="/topics/<%= topic.id %>/links/<%= link.id %>/delete" method="POST" style="display: inline;">
+                          <button type="submit" class="btn btn-delete btn-sm" onclick="return confirm('¿Eliminar este enlace?')">🗑️</button>
+                        </form>
+                      </div>
+
+                      <!-- Formulario editar enlace (oculto) -->
+                      <div id="edit-link-<%= topic.id %>-<%= link.id %>" class="edit-form" style="display: none;">
+                        <form action="/topics/<%= topic.id %>/links/<%= link.id %>/update" method="POST">
+                          <input type="text" name="url" value="<%= link.url %>" required>
+                          <input type="text" name="description" value="<%= link.description %>" required>
+                          <button type="submit" class="btn btn-primary">Guardar</button>
+                          <button type="button" class="btn btn-secondary" onclick="alternarEditarEnlace(<%= topic.id %>, <%= link.id %>)">Cancelar</button>
+                        </form>
+                      </div>
+                    </li>
+                  <% }); %>
+                </ul>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,22 +1,28 @@
 {
   "name": "crud",
   "version": "1.0.0",
-  "description": "",
+  "description": "Sistema CRUD con votaciones usando Express, MVC y PostgreSQL",
   "main": "Server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node server.js",
+    "setup": "node config/setup.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Andylopez-3/CRUD-Sistema-De-Votacion.git"
   },
-  "keywords": [],
+  "keywords": ["express", "mvc", "crud", "voting", "postgresql"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Andylopez-3/CRUD-Sistema-De-Votacion/issues"
   },
-  "homepage": "https://github.com/Andylopez-3/CRUD-Sistema-De-Votacion#readme"
+  "homepage": "https://github.com/Andylopez-3/CRUD-Sistema-De-Votacion#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "ejs": "^3.1.9",
+    "pg": "^8.11.3"
+  }
 }
