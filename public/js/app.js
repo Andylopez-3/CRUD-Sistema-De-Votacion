@@ -1,16 +1,15 @@
 
 // JAVASCRIPT PURO - Maneja interacciones del lado del cliente
 
-// Función para votar por un tema
-function votarTema(idTema) {
-  fetch(`/topics/${idTema}/vote`, {
+function votarTema(idTema) {   // Enviar solicitud POST para votar por el tema
+  fetch(`/topics/${idTema}/vote`, {  // se envia la solicitud al endpoint correspondiente para votar por el tema
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     }
   })
-  .then(respuesta => respuesta.json())
-  .then(datos => {
+  .then(respuesta => respuesta.json())  // Convertir la respuesta a JSON para procesar el resultado
+  .then(datos => {   
     if (datos.success) {
       // Actualizar el contador en tiempo real
       const elementoVotos = document.getElementById(`topic-votes-${idTema}`);

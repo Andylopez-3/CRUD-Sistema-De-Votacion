@@ -1,5 +1,4 @@
 
-
 // SERVIDOR EXPRESS - Punto de entrada de la aplicación con PostgreSQL
 
 const express = require('express');

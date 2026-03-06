@@ -1,10 +1,10 @@
-// controllers/topicController.js
+
 // CONTROLADOR: Recibe solicitudes, usa el Modelo y elige la Vista
 
-const modeloTemas = require('../models/topicModel');
+const modeloTemas = require('../models/TopicModel');  // Importar el modelo para acceder a los métodos de datos
 
-class ControladorTemas {
-  // Mostrar todos los temas
+class ControladorTemas {  // Maneja solicitudes del usuario y coordina respuestas usando el modelo.
+  
   async index(solicitud, respuesta) {
     try {
       const temas = await modeloTemas.getAllTopics();
@@ -19,15 +19,15 @@ class ControladorTemas {
   async create(solicitud, respuesta) {
     try {
       const { name: nombre } = solicitud.body;
-      if (nombre && nombre.trim()) {
+      if (nombre && nombre.trim()) { // Validar que el nombre no esté vacío o solo con espacios
         await modeloTemas.createTopic(nombre.trim());
       }
-      respuesta.redirect('/');
+      respuesta.redirect('/');  // Redirigir a la página principal después de crear el tema
     } catch (error) {
       console.error('Error al crear tema:', error);
       respuesta.status(500).send('Error al crear el tema');
     }
- }
+  }
 
   // Actualizar tema
   async update(solicitud, respuesta) {

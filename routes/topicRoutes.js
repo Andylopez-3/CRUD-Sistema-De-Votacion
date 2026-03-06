@@ -3,7 +3,7 @@
 
 const express = require('express');
 const enrutador = express.Router();
-const controladorTemas = require('../controllers/topicController');
+const controladorTemas = require('../controllers/TopicController');
 
 // Rutas para TEMAS
 enrutador.get('/', controladorTemas.index.bind(controladorTemas));
